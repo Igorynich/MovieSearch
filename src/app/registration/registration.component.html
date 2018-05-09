@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row justify-content-center mt-3">
+
+      <div class="col-7">
+      <h2>Форма регистрации нового пользователя:</h2>
+      <form [formGroup]="registrationForm" (ngSubmit)="register()">
+
+
+            <div class="col my-3">
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Имя пользователя" value="" formControlName="username" [errorStateMatcher]="matcher" (focus)="showResult=false">
+                <mat-error *ngIf="registrationForm.get('username').hasError('required') && !registrationForm.get('username').hasError('minlength')">
+                  Введите имя пользователя
+                </mat-error>
+                <mat-error *ngIf="!registrationForm.get('username').hasError('required') && registrationForm.get('username').hasError('minlength')">
+                  Минимальная длина 3 символа
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col my-3">
+              <mat-form-field class="w-100">
+                <input type="password" matInput placeholder="Пароль" value="" formControlName="password1" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="registrationForm.get('password1').hasError('required') && !registrationForm.get('password1').hasError('minlength')">
+                  Введите пароль
+                </mat-error>
+                <mat-error *ngIf="!registrationForm.get('password1').hasError('required') && registrationForm.get('password1').hasError('minlength')">
+                  Минимальная длина 5 символа
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col my-3">
+              <mat-form-field class="w-100">
+                <input type="password" matInput placeholder="Повторите пароль" value="" formControlName="password2" [errorStateMatcher]="matcher">
+                <mat-error *ngIf="registrationForm.get('password2').hasError('required') && !registrationForm.get('password2').hasError('minlength')">
+                  Повторите пароль
+                </mat-error>
+                <mat-error *ngIf="!registrationForm.get('password2').hasError('required') && registrationForm.get('password2').hasError('minlength')">
+                  Минимальная длина 5 символа
+                </mat-error>
+
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-error *ngIf="registrationForm.hasError('passwordsnotmatch') && registrationForm.get('password1').dirty && registrationForm.get('password2').dirty">
+                Введенные пароли не совпадают
+              </mat-error>
+
+
+              <button type="submit" mat-raised-button color="primary" (click)="register()" class="float-right" [disabled]="registrationForm.invalid">Зарегистрироваться</button>
+            </div>
+      </form>
+        <p *ngIf="showResult" [class]="result==badResult? 'red' : 'green'">{{result}}</p>
+    </div>
+  </div>
+</div>

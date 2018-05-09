@@ -1,0 +1,30 @@
+.col-20perc{
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  -ms-flex: 0 0 20%;
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
+.movie-card{
+  //height: 400px;
+}
+.mc-header{
+  height: 100px;
+}
+.mc-content{
+  height: 350px;
+  margin-bottom: 0;
+}
+.mc-actions{
+  padding: 0 25px;
+}
+.poster{
+  width: 100%;
+  height:100%;
+  margin: auto;
+}
+

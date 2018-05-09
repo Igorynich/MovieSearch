@@ -1,0 +1,47 @@
+<div class="container-fluid position-relative">
+  <div class="row mt-3">
+    <div class="col" *ngIf="!logged">
+      <form (ngSubmit)="login()" [formGroup]="loginForm" class="clearfix">
+        <div class="col">
+          <mat-form-field class="">
+            <input matInput placeholder="Имя пользователя" value="" formControlName="username" [errorStateMatcher]="matcher" (focus)="noSuchUserMessage=''">
+            <mat-error *ngIf="loginForm.get('username').hasError('required')">
+              Введите имя пользователя
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="">
+            <input type="password" matInput placeholder="Пароль" value="" formControlName="password" [errorStateMatcher]="matcher" (focus)="noSuchUserMessage=''">
+            <mat-error *ngIf="loginForm.get('password').hasError('required')">
+              Введите пароль
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+
+          <button type="submit" mat-raised-button color="primary" (click)="login()" class="float-right" [disabled]="loginForm.invalid">Войти</button>
+
+        </div>
+
+      </form>
+      <div class="row mt-3 text-center">
+        <div class="col">
+
+          <a [routerLink]="['/registration']" >Регистрация</a>
+          <p *ngIf="noSuchUserMessage" class="red">{{noSuchUserMessage}}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+    <div class="row mt-3">
+      <div class="col" *ngIf="logged">
+        <p>Здравствуйте, {{loggedAs}}</p>
+        <a [routerLink]="['/favorite', loggedAs]">Мои избранные фильмы</a><br>
+        <button type="button" mat-raised-button color="" (click)="logout()" class="float-right mt-3">Выйти</button>
+      </div>
+
+  </div>
+
+  </div>

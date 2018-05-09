@@ -1,0 +1,55 @@
+
+<div class="container-fluid" >
+  <div class="row mt-3" *ngIf="!movie">
+    <div class="col">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-3" *ngIf="movie">
+    <div class="col-4">
+      <mat-card >
+
+        <img mat-card-image [src]="movie.Poster!='N/A'?movie.Poster:noPosterSubLink" [alt]="movie.Title">
+
+        <mat-card-actions class="clearfix">
+          <button mat-raised-button color="accent" (click)="addToFavorites(movie)" [disabled]="movieIsInFavorites(movie.imdbID)">Добавить в избранные</button>
+          <button mat-button (click)="removeFromFavorites(movie)" [disabled]="movieIsNotInFavorites(movie.imdbID)" class="float-right">Удалить из избранных</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="col-6">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{movie.Title}}</mat-card-title>
+            <mat-card-subtitle>{{movie.Year}}</mat-card-subtitle>
+            <mat-card-subtitle>Производство: {{movie.Production}}({{movie.Country}})</mat-card-subtitle>
+            <mat-card-subtitle>Режиссер: {{movie.Director}}</mat-card-subtitle>
+            <mat-card-subtitle>В ролях: {{movie.Actors}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>
+              {{movie.Plot}}
+            </p>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+      <div class="col-12">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Дополнительная информация: </mat-card-title>
+            <mat-card-subtitle>Дата выхода: {{movie.Released}}</mat-card-subtitle>
+            <mat-card-subtitle>Награды: {{movie.Awards}}</mat-card-subtitle>
+            <mat-card-subtitle>Продолжительность: {{movie.Runtime}}</mat-card-subtitle>
+            <mat-card-subtitle>Вебсайт: <a [href]="movie.Website" *ngIf="movie.Website!='N/A'">{{movie.Website}}</a></mat-card-subtitle>
+            <mat-card-subtitle>Metascore: {{movie.Metascore}}</mat-card-subtitle>
+            <mat-card-subtitle>ImdbRating: {{movie.imdbRating}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </div>
+
+      </div>
+</div>
