@@ -68,7 +68,7 @@ export class DataService {
 
   deleteMovie(movie, username) {
     let newArray = this.getValue(username).filter(value => {
-      return !(value.imdbID == movie.imdbID);
+      return value.imdbID !== movie.imdbID;
     });
     //console.log('Deleted movie: ', movie, this.getValue(username));
     this.store(username, newArray);

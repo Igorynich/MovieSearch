@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DataService} from "../services/data.service";
 import {HttpService} from "../services/http.service";
 import {MyErrorStateMatcher} from "../registration/registration.component";
+import {LocalStorageService} from "../services/local-storage.service";
 
 @Component({
   selector: 'app-side-bar',
@@ -22,13 +23,15 @@ export class SideBarComponent implements OnInit {
   });
   noSuchUserMessage: string = '';
   matcher = new MyErrorStateMatcher();
+  usingLocalStorage: boolean;
 
 
-  constructor(private auth: AuthService, private router: Router, private dataService: DataService, private httpService: HttpService) {
+  constructor(private auth: AuthService, private router: Router, private dataService: DataService, private httpService: HttpService, private local: LocalStorageService) {
   }
 
   ngOnInit() {
     this.checkLoginStatus();
+    this.usingLocalStorage = this.local.usingLocalStorage();
   }
 
   checkLoginStatus() {
@@ -68,4 +71,6 @@ export class SideBarComponent implements OnInit {
     });
 
   }
+
+
 }

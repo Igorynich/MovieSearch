@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from "../services/data.service";
 import {AuthService} from "../services/auth.service";
-import {HttpService} from "../services/http.service";
+import {LocalStorageService} from "../services/local-storage.service";
+import {FavoriteMovie} from "../classes/favorite-movie";
 
 @Component({
   selector: 'app-movie-list',
@@ -10,68 +11,55 @@ import {HttpService} from "../services/http.service";
 })
 export class MovieListComponent implements OnInit {
 
-  @Input() moviesArray:{Poster:string, Title:string, Year:string, imdbID:string}[];
+  @Input() moviesArray:FavoriteMovie[];
   noPosterSubLink = 'http://www.eurodiesel.com/images/img-not-found.gif';
-  @Output() movieRemoved = new EventEmitter<object>();
-  @Output() movieAddedToFavs = new EventEmitter<object>();
-  a;
-  b;
-  //popup: string = 'Lalalala';
-  //logged: boolean;
+  @Output() movieRemoved = new EventEmitter<object>();        //prob no needed
+  @Output() movieAddedToFavs = new EventEmitter<object>();    //prob no needed
 
-  constructor(private dataService: DataService, private auth:AuthService, private httpService: HttpService) { }
+
+  constructor(private dataService: DataService, private auth:AuthService, private local: LocalStorageService) { }
 
   ngOnInit() {
-    //this.logged = this.auth.isLogged();
+
   }
 
   addToFavorites(movie) {
-    this.dataService.addToFavorites(movie);
-    this.movieAddedToFavs.emit(movie);
-    this.dataService.addMovie(movie, this.auth.isLoggedAs());
-    /*this.dataService.setDataReady(false);
-    this.httpService.getFavoriteMovies(this.auth.isLoggedAs()).subscribe((value:object[]) => {
-      console.log("MovieList in cards: ", value);
-      let movieList = this.dataService.convertToFavoriteMoviesType(value);
-      this.dataService.store(this.auth.isLoggedAs(), movieList);
-      this.dataService.setDataReady(true);
-    });*/
+    if (!this.local.usingLocalStorage()){
+      this.dataService.addToFavorites(movie);                        //1
+      this.movieAddedToFavs.emit(movie);        //prob no needed
+      this.dataService.addMovie(movie, this.auth.isLoggedAs());     //check these 2 on optimization
+    } else{
+      this.local.addMovieToFavsList(movie);
+    }
   }
 
   removeFromFavorites(movie) {
-    this.dataService.removeFromFavorites(movie);
-    this.movieRemoved.emit(movie);
-    this.dataService.deleteMovie(movie, this.auth.isLoggedAs());
-    /*this.dataService.setDataReady(false);
-    this.httpService.getFavoriteMovies(this.auth.isLoggedAs()).subscribe((value:object[]) => {
-      console.log("MovieList in cards: ", value);
-      let movieList = this.dataService.convertToFavoriteMoviesType(value);
-      this.dataService.store(this.auth.isLoggedAs(), movieList);
-      this.dataService.setDataReady(true);
-    });*/
+    if (!this.local.usingLocalStorage()){
+      this.dataService.removeFromFavorites(movie);
+      this.movieRemoved.emit(movie);          //NEEDED
+      this.dataService.deleteMovie(movie, this.auth.isLoggedAs());
+    } else {
+      this.local.removeMovieFromFavsList(movie);
+      this.movieRemoved.emit(movie);          //NEEDED for updating favlist on delete
+    }
+
   }
 
   movieIsInFavorites(movieId):boolean{
-    //this.logged = this.auth.isLogged();
-    return this.dataService.movieIsInFavorites(movieId);
-    /*if (!this.auth.isLogged()){
-      return false;
+    if (!this.local.usingLocalStorage()) {
+      return this.dataService.movieIsInFavorites(movieId);
+    } else {
+      return this.local.movieIsInFavorites(movieId);
     }
-    if (this.dataService.getValue(this.auth.isLoggedAs()).imdbID == movieId){
-      return true;
-    }
-    return false;*/
+
   }
   movieIsNotInFavorites(movieId):boolean{
-    //this.logged = this.auth.isLogged();
-    return this.dataService.movieIsNotInFavorites(movieId);
-    /*if (!this.auth.isLogged()){
-      return false;
+    if (!this.local.usingLocalStorage()) {
+      return this.dataService.movieIsNotInFavorites(movieId);
+    } else {
+      return this.local.movieIsNotInFavorites(movieId);
     }
-    if (this.dataService.getValue(this.auth.isLoggedAs()).imdbID == movieId){
-      return true;
-    }
-    return false;*/
+
   }
 
 }

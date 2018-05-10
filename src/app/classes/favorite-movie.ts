@@ -3,5 +3,5 @@ export class FavoriteMovie {
   Poster: string;
   Title: string;
   Year: string;
-  user_name: string;
+  user_name?: string;
 }

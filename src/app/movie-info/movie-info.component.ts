@@ -4,6 +4,7 @@ import {HttpService} from "../services/http.service";
 import {FavoriteMovie} from "../classes/favorite-movie";
 import {AuthService} from "../services/auth.service";
 import {DataService} from "../services/data.service";
+import {LocalStorageService} from "../services/local-storage.service";
 
 @Component({
   selector: 'app-movie-info',
@@ -16,7 +17,7 @@ export class MovieInfoComponent implements OnInit {
   movie;
   noPosterSubLink = 'http://www.eurodiesel.com/images/img-not-found.gif';
 
-  constructor(private route: ActivatedRoute, private httpService: HttpService, private auth: AuthService, private dataService: DataService) {
+  constructor(private route: ActivatedRoute, private httpService: HttpService, private auth: AuthService, private dataService: DataService, private local: LocalStorageService) {
   }
 
   ngOnInit() {
@@ -30,22 +31,38 @@ export class MovieInfoComponent implements OnInit {
 
 
   addToFavorites(movie) {
-    this.dataService.addToFavorites(movie);
-    this.dataService.addMovie(movie, this.auth.isLoggedAs());
+    if (!this.local.usingLocalStorage()){
+      this.dataService.addToFavorites(movie);
+      this.dataService.addMovie(movie, this.auth.isLoggedAs());
+    } else{
+      this.local.addMovieToFavsList(movie);
+    }
+
   }
 
   removeFromFavorites(movie) {
-    this.dataService.removeFromFavorites(movie);
-    this.dataService.deleteMovie(movie, this.auth.isLoggedAs());
+    if (!this.local.usingLocalStorage()){
+      this.dataService.removeFromFavorites(movie);
+      this.dataService.deleteMovie(movie, this.auth.isLoggedAs());
+    } else {
+      this.local.removeMovieFromFavsList(movie);
+    }
+
   }
 
   movieIsInFavorites(movieId): boolean {
-    return this.dataService.movieIsInFavorites(movieId);
-
+    if (!this.local.usingLocalStorage()) {
+      return this.dataService.movieIsInFavorites(movieId);
+    } else {
+      return this.local.movieIsInFavorites(movieId);
+    }
   }
 
   movieIsNotInFavorites(movieId): boolean {
-    return this.dataService.movieIsNotInFavorites(movieId);
-
+    if (!this.local.usingLocalStorage()) {
+      return this.dataService.movieIsNotInFavorites(movieId);
+    } else {
+      return this.local.movieIsNotInFavorites(movieId);
+    }
   }
 }

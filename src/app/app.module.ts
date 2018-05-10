@@ -28,6 +28,7 @@ import {SearchListComponent} from "./search-list/search-list.component";
 import { MovieListComponent } from './movie-list/movie-list.component';
 import {DataService} from "./services/data.service";
 import {AuthGuard} from "./favorites/auth.guard";
+import {LocalStorageService} from "./services/local-storage.service";
 
 
 const routes = [
@@ -71,7 +72,7 @@ const routes = [
     MatCardModule,
     MatProgressSpinnerModule
   ],
-  providers: [AuthService, HttpService, DataService, AuthGuard],
+  providers: [AuthService, HttpService, DataService, AuthGuard, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
