@@ -62,7 +62,7 @@ export class MovieInfoComponent implements OnInit {
     if (!this.local.usingLocalStorage()) {
       return this.dataService.movieIsNotInFavorites(movieId);
     } else {
-      return this.local.movieIsNotInFavorites(movieId);
+      return !this.local.movieIsInFavorites(movieId);
     }
   }
 }

@@ -64,7 +64,7 @@ export class LocalStorageService {
     return result;
   }
 
-  movieIsNotInFavorites(movieId): boolean {
+  /*movieIsNotInFavorites(movieId): boolean {
     let result = false;
     if (this.favMoviesList){
       this.favMoviesList.forEach(value => {
@@ -75,5 +75,5 @@ export class LocalStorageService {
     }
 
     return !result;
-  }
+  }*/
 }

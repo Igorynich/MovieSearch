@@ -29,6 +29,7 @@ import { MovieListComponent } from './movie-list/movie-list.component';
 import {DataService} from "./services/data.service";
 import {AuthGuard} from "./favorites/auth.guard";
 import {LocalStorageService} from "./services/local-storage.service";
+import {LocalStorageBlockGuard} from "./registration/local-storage-block.guard";
 
 
 const routes = [
@@ -37,7 +38,7 @@ const routes = [
       {path: "", component: SearchListComponent}
     ]},
   {path: "favorite/:username", component: FavoritesComponent, canActivate: [AuthGuard]},
-  {path: "registration", component: RegistrationComponent},
+  {path: "registration", component: RegistrationComponent, canActivate: [LocalStorageBlockGuard]},
   {path: "", redirectTo: "/search", pathMatch: "full"},
   {path: "**", component: PageNotFoundComponent}
 ];
@@ -72,7 +73,7 @@ const routes = [
     MatCardModule,
     MatProgressSpinnerModule
   ],
-  providers: [AuthService, HttpService, DataService, AuthGuard, LocalStorageService],
+  providers: [AuthService, HttpService, DataService, AuthGuard, LocalStorageService, LocalStorageBlockGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
