@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {FavoriteMovie} from "../classes/favorite-movie";
-import {catchError, retry} from "rxjs/operators";
-import { Observable } from 'rxjs';
-import {ErrorObservable} from "rxjs/observable/ErrorObservable";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {FavoriteMovie} from '../classes/favorite-movie';
+import {catchError, retry} from 'rxjs/operators';
+import {throwError} from 'rxjs';
 
 @Injectable()
 export class HttpService {
 
-  private apiLink: string = 'http://www.omdbapi.com/?apikey=d81562b3&';
-  private db: string = 'http://localhost:3000';
-  private retryCount: number = 3;
+  private apiLink = 'http://www.omdbapi.com/?apikey=d81562b3&';
+  private db = 'http://localhost:3000';
+  private retryCount = 3;
 
   constructor(private http: HttpClient) {
   }
@@ -53,14 +52,14 @@ export class HttpService {
 
   registerNewUser(credentials) {
 
-    return this.http.post(this.db + "/auth/regnew", credentials).pipe(
+    return this.http.post(this.db + '/auth/regnew', credentials).pipe(
       retry(this.retryCount),
       catchError(this.handleError));
   }
 
   findUser(credentials) {
 
-    return this.http.post(this.db + "/auth", credentials).pipe(
+    return this.http.post(this.db + '/auth', credentials).pipe(
       retry(this.retryCount),
       catchError(this.handleError));
   }
@@ -77,7 +76,7 @@ export class HttpService {
         `body was: ${error.error}`);
     }
     // return an observable with a user-facing error message
-    return new ErrorObservable(
+    return throwError(
       'Something bad happened; please try again later.');
   };
 }
