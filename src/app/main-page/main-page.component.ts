@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {map, startWith} from 'rxjs/operators';
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {HttpService} from "../services/http.service";
 import {Router} from "@angular/router";
 import {DataService} from "../services/data.service";
