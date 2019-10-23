@@ -33,6 +33,8 @@ import {DataService} from "./services/data.service";
 import {AuthGuard} from "./favorites/auth.guard";
 import {LocalStorageService} from "./services/local-storage.service";
 import {LocalStorageBlockGuard} from "./registration/local-storage-block.guard";
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 
 const routes = [
@@ -74,7 +76,9 @@ const routes = [
     MatButtonModule,
     MatListModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ScrollingModule,
+    InfiniteScrollModule
   ],
   providers: [AuthService, HttpService, DataService, AuthGuard, LocalStorageService, LocalStorageBlockGuard],
   bootstrap: [AppComponent]

@@ -11,13 +11,14 @@ import {FavoriteMovie} from "../classes/favorite-movie";
 })
 export class MovieListComponent implements OnInit {
 
-  @Input() moviesArray:FavoriteMovie[];
+  @Input() moviesArray: FavoriteMovie[];
   noPosterSubLink = 'http://www.eurodiesel.com/images/img-not-found.gif';
   @Output() movieRemoved = new EventEmitter<object>();        //prob no needed
   @Output() movieAddedToFavs = new EventEmitter<object>();    //prob no needed
+  @Output() scrolled = new EventEmitter<any>();
 
 
-  constructor(private dataService: DataService, private auth:AuthService, private local: LocalStorageService) { }
+  constructor(private dataService: DataService, private auth: AuthService, private local: LocalStorageService) { }
 
   ngOnInit() {
 
@@ -28,7 +29,7 @@ export class MovieListComponent implements OnInit {
       this.dataService.addToFavorites(movie);                        //1
       this.movieAddedToFavs.emit(movie);        //prob no needed
       this.dataService.addMovie(movie, this.auth.isLoggedAs());     //check these 2 on optimization
-    } else{
+    } else {
       this.local.addMovieToFavsList(movie);
     }
   }
@@ -45,21 +46,27 @@ export class MovieListComponent implements OnInit {
 
   }
 
-  movieIsInFavorites(movieId):boolean{
+  movieIsInFavorites(movieId): boolean {
     if (!this.local.usingLocalStorage()) {
       return this.dataService.movieIsInFavorites(movieId);
     } else {
       return this.local.movieIsInFavorites(movieId);
     }
-
   }
-  movieIsNotInFavorites(movieId):boolean{
+  movieIsNotInFavorites(movieId): boolean {
     if (!this.local.usingLocalStorage()) {
       return this.dataService.movieIsNotInFavorites(movieId);
     } else {
       return !this.local.movieIsInFavorites(movieId);
     }
-
   }
 
+  onScroll() {
+    console.log('Scrolling');
+    this.scrolled.emit();
+  }
+
+  test(ev) {
+    console.log('scrolledIndexChange to ', ev);
+  }
 }
